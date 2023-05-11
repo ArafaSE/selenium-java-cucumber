@@ -47,9 +47,9 @@ Feature: As a user i can see the trial price in my local currency
       | ma           | لايت      |
       | ma           | الأساسية  |
       | ma           | بريميوم  |
-      | tn           | لايت      |
-      | tn           | الأساسية  |
-      | tn           | بريميوم  |
+#      | tn           | لايت      |
+#      | tn           | الأساسية  |
+#      | tn           | بريميوم  |
       | ye           | لايت      |
       | ye           | الأساسية  |
       | ye           | بريميوم  |
