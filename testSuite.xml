@@ -1,10 +1,11 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 
 <suite name = "jawwy.tv test Suite" thread-count="1">
+    <!-- browser options values [chrome, chrome-headless, firefox, edge]   -->
     <parameter name="browser" value="chrome-headless"/>
     <test name = "Check Currency tests">
         <classes>
-            <class name = "tests.TC1_CheckCurrency" />
+            <class name = "runner.TestRunner" />
         </classes>
     </test>
 </suite>
