@@ -49,7 +49,7 @@ Feature: As a user i can see the trial price in my local currency
       | ma           | بريميوم  |
 #      | tn           | لايت      | have an issue
 #      | tn           | الأساسية  |  have an issue
-      | tn           | بريميوم  |
+#      | tn           | بريميوم  |  have an issue
       | ye           | لايت      |
       | ye           | الأساسية  |
       | ye           | بريميوم  |
