@@ -8,7 +8,7 @@ on:
 
 jobs:
 
-  build:
+  build_and_test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -20,12 +20,3 @@ jobs:
           cache: maven
       - name: Build with Maven
         run: mvn -B package --file pom.xml
-
-
-  e2e-test:
-    runs-on: ubuntu-latest
-    uses: build
-    steps:
-      - uses: actions/checkout@v3
-      - name: run cucumber tests
-        run: mvn clean test -DsuiteXmlFile=testSuite
