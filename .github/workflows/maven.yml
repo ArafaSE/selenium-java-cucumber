@@ -22,7 +22,9 @@ jobs:
         run: mvn -B package --file pom.xml
       - name: Run e2e tests
         run: mvn clean test -DsuiteXmlFile=testSuite
-      - uses: actions/upload-artifact@v3
+      - name: Test Report
+        uses: actions/upload-artifact@v3
+        if: success() || failure()
         with:
-          name: cucumber-artifact
-          path: /target
+          name: Cucumber Report
+          path: screenshots
