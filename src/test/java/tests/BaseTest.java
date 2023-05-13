@@ -1,7 +1,5 @@
 package tests;
 
-import io.cucumber.java.After;
-import io.cucumber.java.Scenario;
 import io.cucumber.testng.AbstractTestNGCucumberTests;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
@@ -11,11 +9,13 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
-import org.testng.ITestResult;
 import org.testng.annotations.*;
 import org.testng.log4testng.Logger;
 import pages.BasePage;
-import utils.Reporter;
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
 
 public class BaseTest extends AbstractTestNGCucumberTests {
     protected static WebDriver driver;
@@ -73,6 +73,12 @@ public class BaseTest extends AbstractTestNGCucumberTests {
         }
     }
 
+    @BeforeSuite
+    public void cleanTests() throws IOException {
+        File directory = new File("./screenshots");
+        FileUtils.cleanDirectory(directory);
+    }
+
     @AfterSuite
     public void tearDown() {driver.quit();}
 
@@ -81,15 +87,6 @@ public class BaseTest extends AbstractTestNGCucumberTests {
         driver.get(HOME_URL);
         basePage = new BasePage();
         basePage.setDriver(driver);
-    }
-    @AfterMethod
-    public void screenshotOnFailure(ITestResult result) {
-        if (result.getStatus() == ITestResult.FAILURE) {
-            System.out.println("\u001B[40m" + "\u001B[31m" + "Failed! - Taking screenshots.." + "\u001B[0m");
-            Reporter.captureScreenshot(driver, result.getName());
-
-            logger.error(result);
-        }
     }
 
     protected String getHomURL(){
