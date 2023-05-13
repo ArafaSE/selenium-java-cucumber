@@ -27,4 +27,4 @@ jobs:
         if: success() || failure()
         with:
           name: Cucumber Report
-          path: screenshots
+          path: target/cucumber-html-report.html
