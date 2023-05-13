@@ -1,6 +1,6 @@
 Feature: As a user i can see the trial price in my local currency
 
-  @happy-path
+#  @happy-path
   Scenario Outline: User can see trial price in his country currency
     Given I am a non-registered customer
     And I navigate to "https://subscribe.jawwy.tv/"
@@ -26,6 +26,9 @@ Feature: As a user i can see the trial price in my local currency
 
     Examples:
       | countryCode  | planName |
+      | tn           | لايت      |
+      | tn           | الأساسية  |
+      | tn           | بريميوم  |
       | eg           | لايت      |
       | eg           | الأساسية  |
       | eg           | بريميوم  |
@@ -47,9 +50,6 @@ Feature: As a user i can see the trial price in my local currency
       | ma           | لايت      |
       | ma           | الأساسية  |
       | ma           | بريميوم  |
-#      | tn           | لايت      | contains a bug - price undefined
-#      | tn           | الأساسية  | contains a bug - price undefined
-#      | tn           | بريميوم  | contains a bug - price undefined
       | ye           | لايت      |
       | ye           | الأساسية  |
       | ye           | بريميوم  |

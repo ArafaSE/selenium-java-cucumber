@@ -1,5 +1,7 @@
 package steps;
 
+import io.cucumber.java.AfterStep;
+import io.cucumber.java.Scenario;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -8,10 +10,24 @@ import org.testng.Assert;
 import pages.CheckoutPage;
 import pages.HomePage;
 import tests.BaseTest;
+import utils.Reporter;
+
+import java.util.ArrayList;
 
 public class TestSteps extends BaseTest {
     HomePage homePage = new HomePage();
     CheckoutPage checkoutPage;
+    @AfterStep
+    public void attachToReport(Scenario scenario){
+        if(scenario.isFailed()) {
+            System.out.println("\u001B[40m" + "\u001B[31m" + "Failed! - Taking screenshots.." + "\u001B[0m");
+            final byte[] screenshot = Reporter.captureScreenshot(driver, scenario.getName());
+            // TODO: has an issue that it only add attachments if the first Example failed
+            scenario.attach(screenshot, "image/png", "Screenshot");
+            scenario.log("Failed step line number: " + scenario.getLine());
+        }
+    }
+
     @Given("I am a non-registered customer")
     public void i_am_a_non_registered_customer() {
 
