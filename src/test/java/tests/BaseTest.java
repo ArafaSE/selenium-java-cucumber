@@ -16,22 +16,60 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+
+import dataProviders.ConfigFileReader;
 
 public class BaseTest extends AbstractTestNGCucumberTests {
     protected static WebDriver driver;
     protected BasePage basePage;
-    private final String HOME_URL = "https://subscribe.jawwy.tv/eg-ar";
     public Logger logger = Logger.getLogger(this.getClass());
+    ConfigFileReader configFileReader;
 
     @BeforeSuite
-    @Parameters({"browser"})
-    public void setUp(@Optional("chrome-headless") String browserName) {
+//    @Parameters({"browser"})
+    public void setUp() throws IOException {
+        cleanTests();
+        startDriver();
+    }
+    @AfterSuite
+    public void tearDown() {driver.quit();}
+
+    @BeforeMethod
+    public void loadApplication(){
+        driver.get(configFileReader.getData("home_url"));
+        basePage = new BasePage();
+        basePage.setDriver(driver);
+    }
+    public void cleanTests() throws IOException {
+        // load data from data providers
+        configFileReader = new ConfigFileReader();
+        // clean old screenshots folder
+        File directory = new File("./screenshots");
+        FileUtils.cleanDirectory(directory);
+    }
+    public void startDriver(){
+        String browserName = configFileReader.getData("browser");
+        String headless = configFileReader.getData("headless");
+
         if (browserName.equalsIgnoreCase("chrome")) {
             WebDriverManager.chromedriver().setup();
 
             ChromeOptions chromeOptions = new ChromeOptions();
             chromeOptions.addArguments("--remote-allow-origins=*", "--start-maximized");
 
+            if(headless.equals("true")){
+                chromeOptions.addArguments(
+                        "--headless",
+                        "--log-level=3",
+                        "--remote-allow-origins=*",
+                        "--disable-gpu",
+                        "--window-size=1920,1080",
+                        "--no-sandbox",
+                        "--disable-dev-shm-usage",
+                        "--disable-extensions",
+                        "--ignore-certificate-errors");
+            }
             driver = new ChromeDriver(chromeOptions);
             driver.manage().window().maximize();
         }
@@ -40,6 +78,19 @@ public class BaseTest extends AbstractTestNGCucumberTests {
 
             FirefoxOptions firefoxOptions = new FirefoxOptions();
             firefoxOptions.addArguments("--remote-allow-origins=*", "--start-maximized");
+
+            if(headless.equals("true")){
+                firefoxOptions.addArguments(
+                        "--headless",
+                        "--log-level=3",
+                        "--remote-allow-origins=*",
+                        "--disable-gpu",
+                        "--window-size=1920,1080",
+                        "--no-sandbox",
+                        "--disable-dev-shm-usage",
+                        "--disable-extensions",
+                        "--ignore-certificate-errors");
+            }
 
             driver = new FirefoxDriver(firefoxOptions);
             driver.manage().window().maximize();
@@ -50,47 +101,26 @@ public class BaseTest extends AbstractTestNGCucumberTests {
             EdgeOptions edgeOptions = new EdgeOptions();
             edgeOptions.addArguments("--remote-allow-origins=*", "--start-maximized");
 
+            if(headless.equals("true")){
+                edgeOptions.addArguments(
+                        "--headless",
+                        "--log-level=3",
+                        "--remote-allow-origins=*",
+                        "--disable-gpu",
+                        "--window-size=1920,1080",
+                        "--no-sandbox",
+                        "--disable-dev-shm-usage",
+                        "--disable-extensions",
+                        "--ignore-certificate-errors");
+            }
+
             driver = new EdgeDriver(edgeOptions);
             driver.manage().window().maximize();
         }
-        // headless browser testing with Chrome headless option
-        else if (browserName.equalsIgnoreCase("chrome-headless")) {
-            WebDriverManager.chromedriver().setup();
-
-            ChromeOptions chromeOptions = new ChromeOptions();
-            chromeOptions.addArguments(
-                    "--headless",
-                    "--log-level=3",
-                    "--remote-allow-origins=*",
-                    "--disable-gpu",
-                    "--window-size=1920,1080",
-                    "--no-sandbox",
-                    "--disable-dev-shm-usage",
-                    "--disable-extensions",
-                    "--ignore-certificate-errors");
-
-            driver = new ChromeDriver(chromeOptions);
-        }
-    }
-
-    @BeforeSuite
-    public void cleanTests() throws IOException {
-        File directory = new File("./screenshots");
-        FileUtils.cleanDirectory(directory);
-    }
-
-    @AfterSuite
-    public void tearDown() {driver.quit();}
-
-    @BeforeMethod
-    public void loadApplication(){
-        driver.get(HOME_URL);
-        basePage = new BasePage();
-        basePage.setDriver(driver);
     }
 
     protected String getHomURL(){
-        return HOME_URL;
+        return configFileReader.getData("home_url");
     }
 
     protected String getCurrentURL(){

@@ -1,9 +1,8 @@
 Feature: As a user i can see the trial price in my local currency
 
-#  @happy-path
+  @happy-path
   Scenario Outline: User can see trial price in his country currency
     Given I am a non-registered customer
-    And I navigate to "https://subscribe.jawwy.tv/"
     When I select my country "<countryCode>"
     Then I can see trial price displayed in my "<currency>"
 
@@ -19,7 +18,6 @@ Feature: As a user i can see the trial price in my local currency
   @happy-path
   Scenario Outline: User get a free trial when selecting any plan for the first time
     Given I am a non-registered customer
-    And I navigate to "https://subscribe.jawwy.tv/"
     When I select my country "<countryCode>"
     And I select plan "<planName>"
     Then I get a free trial
